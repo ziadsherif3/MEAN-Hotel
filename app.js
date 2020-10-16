@@ -1,0 +1,1 @@
+console.log("Start command by npm.")

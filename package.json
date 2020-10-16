@@ -1,0 +1,26 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "A hotel description and rating MEAN app.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ziadsherif3/MEAN-Hotel.git"
+  },
+  "keywords": [
+    "mean"
+  ],
+  "author": "Ziad Sherif",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ziadsherif3/MEAN-Hotel/issues"
+  },
+  "homepage": "https://github.com/ziadsherif3/MEAN-Hotel#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
