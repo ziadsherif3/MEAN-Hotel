@@ -1,15 +1,15 @@
 const MongoClient = require('mongodb').MongoClient;
-const dburl = `mongodb://localhost:27017/meanhotel`; // The connection string
+const dburl = `mongodb://localhost:27017`; // The connection string
 
 let _connection = null;
 
 function open() {
-    MongoClient.connect(dburl, (err, db) => {
+    MongoClient.connect(dburl, (err, client) => {
         if (err) {
-            console.log(`Connection to the database failed.`);
+            console.log(`Connection to the database server failed.`);
             return;
         }
-        _connection = db;
+        _connection = client.db('meanhotel');
         console.log(`Connection with database successful.`);
     });
 }
