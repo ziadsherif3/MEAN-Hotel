@@ -1,9 +1,11 @@
-const dbConn = require('../data/dbconnection');
-const ObjectId = require('mongodb').ObjectId;
+// const dbConn = require('../data/dbconnection');
+// const ObjectId = require('mongodb').ObjectId;
+const mongoose = require('mongoose');
+const Hotel = mongoose.model('Hotel');
 
 module.exports.hotelsGetAll = async function(req, res) {
-    const db = dbConn.get();
-    const collection = db.collection('hotels');
+    // const db = dbConn.get();
+    // const collection = db.collection('hotels');
 
     let offset = 0;
     let count = 5;
@@ -18,26 +20,41 @@ module.exports.hotelsGetAll = async function(req, res) {
 
     console.log(`${req.method} request to hotels is made.`);
 
-    const docs = await collection
-                            .find()
-                            .skip(offset)
-                            .limit(count)
-                            .toArray();
+    // const docs = await collection
+    //                         .find()
+    //                         .skip(offset)
+    //                         .limit(count)
+    //                         .toArray();
     
-    res.status(200).json(docs);
+    // res.status(200).json(docs);
+
+    Hotel
+        .find()
+        .skip(offset)
+        .limit(count)
+        .exec((err, hotels) => {
+        console.log(`Number of hotels: ${hotels.length}`);
+        res.status(200).json(hotels);
+    });
 }
 
 module.exports.getHotel = async function(req, res) {
-    const db = dbConn.get();
-    const collection = db.collection('hotels');
+    // const db = dbConn.get();
+    // const collection = db.collection('hotels');
 
     const hotelId = req.params.hotelId;
 
     console.log(`${req.method} request to ${hotelId} hotel is made.`);
 
-    const doc = await collection
-                                .findOne({"_id": ObjectId(hotelId)});
-    res.status(200).json(doc);
+    // const doc = await collection
+    //                             .findOne({"_id": ObjectId(hotelId)});
+    // res.status(200).json(doc);
+
+    Hotel
+        .findById(hotelId)
+        .exec((err, doc) => {
+            res.status(200).json(doc);
+        });
 }
 
 module.exports.postHotel = async function(req, res) {

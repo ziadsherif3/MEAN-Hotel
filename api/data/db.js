@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const dburl = `mongodb://localhost/meanhotel`; // The connection string
 
-mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
 
 // mongoose.connection.on('connected', () => {
 //     console.log('Mongoose connected to database at ', dburl);
@@ -34,3 +34,7 @@ process.on('SIGINT', () => {
 //         process.kill(process.pid, 'SIGUSR2');
 //     });
 // });
+
+/** Import hotels.model.js */
+
+require('./hotels.model.js');
