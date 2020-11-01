@@ -1,3 +1,5 @@
+/** Replaced by mongoose */
+
 const MongoClient = require('mongodb').MongoClient;
 const dburl = `mongodb://localhost:27017`; // The connection string
 

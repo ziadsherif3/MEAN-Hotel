@@ -1,4 +1,4 @@
-require('./api/data/dbconnection').open();
+require('./api/data/db');
 
 const express = require('express');
 const app = express(); // The top-level function of the express application.
