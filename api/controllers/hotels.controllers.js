@@ -3,12 +3,41 @@
 const mongoose = require('mongoose');
 const Hotel = mongoose.model('Hotel');
 
+function runGeoQuery(req, res) {
+    const long = parseFloat(req.query.long);
+    const lat = parseFloat(req.query.lat);
+
+    /** Create the geoJSON point. */
+
+    const point = { type: "Point", coordinates: [long, lat] };
+
+    Hotel
+        .aggregate([
+            {
+                $geoNear: {
+                    near: point,
+                    distanceField: "dist.calculated",
+                    maxDistance: 2000,
+                    includeLocs: "dist.Location",
+                    spherical: true
+                }
+            }
+        ], (err, docs) => {
+            res.status(200).json(docs);
+        });
+}
+
 module.exports.hotelsGetAll = async function(req, res) {
     // const db = dbConn.get();
     // const collection = db.collection('hotels');
 
     let offset = 0;
     let count = 5;
+
+    if (req.query && req.query.long && req.query.lat) {
+        runGeoQuery(req, res);
+        return;
+    }
 
     if (req.query && req.query.offset) {
         offset = parseInt(req.query.offset, 10);
