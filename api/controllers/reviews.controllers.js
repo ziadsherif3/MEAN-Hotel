@@ -10,7 +10,20 @@ module.exports.getAllReviews = function(req, res) {
         .findById(hotelId)
         .select('reviews')
         .exec((err, doc) => {
-            res.status(200).json(doc.reviews);
+            const response = {
+                status: 200,
+                data: doc
+            };
+
+            if (err) {
+                response.status = 500;
+                response.data = err;
+            }
+            else if (!doc) {
+                response.status = 404;
+                response.data = { "Message": "No hotel found with this id." };
+            }
+            res.status(response.status).json(response.data);
         });
 }
 
@@ -24,6 +37,25 @@ module.exports.getOneReview = function(req, res) {
         .findById(hotelId)
         .select('reviews')
         .exec((err, doc) => {
-            res.status(200).json(doc.reviews.id(reviewId));
+            const response = {
+                status: 200,
+            };
+
+            if (err) {
+                response.status = 500;
+                response.data = err;
+            }
+            else if (!doc) {
+                response.status = 404;
+                response.data = { "Message": "No hotel found with this id." };
+            }
+            else {
+                response.data = doc.reviews.id(reviewId);
+                if (!doc.reviews.id(reviewId)) {
+                    response.status = 404;
+                    response.data = { "Message": "No review found with this id." };
+                }
+            }
+            res.status(response.status).json(response.data);
         });
 }

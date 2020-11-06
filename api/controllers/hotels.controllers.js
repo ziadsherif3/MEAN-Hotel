@@ -23,16 +23,30 @@ function runGeoQuery(req, res) {
                 }
             }
         ], (err, docs) => {
-            res.status(200).json(docs);
+            const response = {
+                status: 200,
+                data: docs
+            };
+
+            if (err) {
+                response.status = 500;
+                response.data = err;
+            }
+            else if (!docs) {
+                response.status = 404;
+                response.data = { "Message": "No hotels found." };
+            }
+            res.status(response.status).json(response.data);
         });
 }
 
-module.exports.hotelsGetAll = async function(req, res) {
+module.exports.hotelsGetAll = function(req, res) {
     // const db = dbConn.get();
     // const collection = db.collection('hotels');
 
     let offset = 0;
     let count = 5;
+    let maxCount = 10;
 
     if (req.query && req.query.long && req.query.lat) {
         runGeoQuery(req, res);
@@ -45,6 +59,16 @@ module.exports.hotelsGetAll = async function(req, res) {
 
     if (req.query && req.query.count) {
         count = parseInt(req.query.count, 10);
+    }
+
+    if (isNaN(offset) || isNaN(count)) {
+        res.status(400).send("Bad request.");
+        return;
+    }
+
+    if (count > maxCount) {
+        res.status(400).send("Bad request: Max count reached.");
+        return;
     }
 
     console.log(`${req.method} request to hotels is made.`);
@@ -62,12 +86,23 @@ module.exports.hotelsGetAll = async function(req, res) {
         .skip(offset)
         .limit(count)
         .exec((err, hotels) => {
-        console.log(`Number of hotels: ${hotels.length}`);
-        res.status(200).json(hotels);
+            const response = {
+                status: 200,
+                data: hotels
+            };
+
+            if (err) {
+                response.status = 500;
+                response.data = err;
+            }
+            else {
+                console.log(`Number of hotels: ${hotels.length}`);
+            }
+            res.status(response.status).json(response.data);
     });
 }
 
-module.exports.getHotel = async function(req, res) {
+module.exports.getHotel = function(req, res) {
     // const db = dbConn.get();
     // const collection = db.collection('hotels');
 
@@ -82,13 +117,26 @@ module.exports.getHotel = async function(req, res) {
     Hotel
         .findById(hotelId)
         .exec((err, doc) => {
-            res.status(200).json(doc);
+            const response = {
+                status: 200,
+                data: doc
+            };
+
+            if (err) {
+                response.status = 500;
+                response.data = err;
+            }
+            else if (!doc) {
+                response.status = 404;
+                response.data = { "Message": "No hotels found." };
+            }
+            res.status(response.status).json(response.data);
         });
 }
 
 module.exports.postHotel = async function(req, res) {
-    const db = dbConn.get();
-    const collection = db.collection('hotels');
+    // const db = dbConn.get();
+    // const collection = db.collection('hotels');
 
     console.log(`${req.method} request to add hotel is made.`);
 
@@ -97,13 +145,18 @@ module.exports.postHotel = async function(req, res) {
 
         newHotel.stars = parseInt(req.body.stars, 10);
 
-        const result = await collection.insertOne(newHotel);
-
-        console.log(`Adding the hotel succeeded`);
-        res.status(201).json(result);
+        Hotel
+            .insertMany(newHotel)
+                .then(result => {
+                    console.log(`Adding the hotel succeeded`);
+                    res.status(201).json(result);
+                })
+                .catch(err => {
+                    res.status(500).json(err);
+                });
     }
     else {
         console.log(`Adding the hotel failed`);
-        res.status(400).json({message: "Data missing from the body."});
+        res.status(400).json({"Message": "Data missing from the body."});
     }
 }
