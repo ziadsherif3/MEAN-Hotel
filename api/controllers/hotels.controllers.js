@@ -123,6 +123,7 @@ module.exports.getHotel = function(req, res) {
             };
 
             if (err) {
+                console.log("Error finding the hotel.");
                 response.status = 500;
                 response.data = err;
             }
@@ -165,5 +166,55 @@ module.exports.postHotel = async function(req, res) {
         })
         .catch(err => {
         res.status(400).json(err);
+        });
+};
+
+module.exports.updateHotel = function(req, res) {
+    const hotelId = req.params.hotelId;
+
+    console.log(`${req.method} request to ${hotelId} hotel is made.`);
+
+    Hotel
+        .findById(hotelId)
+        .select("-reviews -rooms")
+        .exec((err, doc) => {
+            const response = {
+                status: 200,
+                data: doc
+            };
+
+            if (err) {
+                console.log("Error finding the hotel.");
+                response.status = 500;
+                response.data = err;
+            }
+            else if (!doc) {
+                response.status = 404;
+                response.data = { "Message": "No hotels found." };
+            }
+            if (response.status === 200) {
+                doc.name = req.body.name;
+                doc.description = req.body.description;
+                doc.stars = parseInt(req.body.stars, 10);
+                doc.services = _splitArray(req.body.services);
+                doc.photos = _splitArray(req.body.photos);
+                doc.currency = req.body.currency;
+                doc.location = {
+                    address: req.body.address,
+                    coordinates: [parseFloat(req.body.long), parseFloat(req.body.lat)]
+                };
+
+                doc.save((err, hotelUpdated) => {
+                    if (err) {
+                        res.status(500).json(err);
+                    }
+                    else {
+                        res.status(204).json();
+                    }
+                });
+            }
+            else {
+                res.status(response.status).json(response.data);
+            }
         });
 };

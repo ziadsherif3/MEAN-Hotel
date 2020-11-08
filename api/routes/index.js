@@ -12,7 +12,8 @@ router
 
 router
     .route('/hotels/:hotelId')
-    .get(hotelsCtrl.getHotel);
+    .get(hotelsCtrl.getHotel)
+    .put(hotelsCtrl.updateHotel);
 
 /** Reviews routes */
 
@@ -23,6 +24,7 @@ router
 
 router
     .route('/hotels/:hotelId/reviews/:reviewId')
-    .get(reviewsCtrl.getOneReview);
+    .get(reviewsCtrl.getOneReview)
+    .put(reviewsCtrl.updateReview);
 
 module.exports = router;

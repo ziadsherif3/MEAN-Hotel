@@ -106,3 +106,51 @@ module.exports.postReview = function(req, res) {
             }
         });
 };
+
+module.exports.updateReview = function(req, res) {
+    const hotelId = req.params.hotelId;
+    const reviewId = req.params.reviewId;
+
+    console.log(`${req.method} request to ${hotelId} hotel ${reviewId} review is made.`);
+
+    Hotel
+        .findById(hotelId)
+        .select('reviews')
+        .exec((err, doc) => {
+            const response = {
+                status: 200,
+            };
+
+            if (err) {
+                response.status = 500;
+                response.data = err;
+            }
+            else if (!doc) {
+                response.status = 404;
+                response.data = { "Message": "No hotel found with this id." };
+            }
+            else {
+                if (!doc.reviews.id(reviewId)) {
+                    response.status = 404;
+                    response.data = { "Message": "No review found with this id." };
+                }
+                else {
+                    doc.reviews.id(reviewId).name = req.body.name;
+                    doc.reviews.id(reviewId).rating = parseInt(req.body.rating);
+                    doc.reviews.id(reviewId).review = req.body.review;
+
+                    doc.save((err, hotelUpdated) => {
+                        if (err) {
+                            res.status(500).json(err);
+                        }
+                        else {
+                            res.status(204).json();
+                        }
+                    });
+
+                    return;
+                }
+            }
+            res.status(response.status).json(response.data);
+        });
+};
