@@ -218,3 +218,21 @@ module.exports.updateHotel = function(req, res) {
             }
         });
 };
+
+module.exports.deleteHotel = function(req, res) {
+    const hotelId = req.params.hotelId;
+
+    console.log(`${req.method} request to ${hotelId} hotel is made.`);
+
+    Hotel
+        .findByIdAndRemove(hotelId)
+        .exec((err, doc) => {
+            if (err) {
+                res.status(404).json(err);
+            }
+            else {
+                console.log(`${hotelId} hotel successfully deleted.`);
+                res.status(204).json();
+            }
+        });
+};
