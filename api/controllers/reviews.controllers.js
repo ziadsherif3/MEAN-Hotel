@@ -25,7 +25,7 @@ module.exports.getAllReviews = function(req, res) {
             }
             res.status(response.status).json(response.data);
         });
-}
+};
 
 module.exports.getOneReview = function(req, res) {
     const hotelId = req.params.hotelId;
@@ -58,4 +58,51 @@ module.exports.getOneReview = function(req, res) {
             }
             res.status(response.status).json(response.data);
         });
+};
+
+function addReview(req, res, hotel) {
+    hotel.reviews.push({
+        name: req.body.name,
+        rating: parseInt(req.body.rating),
+        review: req.body.review
+    });
+
+    hotel.save((err, hotelUpdated) => {
+        if (err) {
+            res.status(500).json(err);
+        }
+        else {
+            res.status(201).json(hotelUpdated.reviews[hotelUpdated.reviews.length - 1]);
+        }
+    });
 }
+
+module.exports.postReview = function(req, res) {
+    const hotelId = req.params.hotelId;
+
+    console.log(`${req.method} request to add a review to ${hotelId} hotel is made.`);
+    
+    Hotel
+        .findById(hotelId)
+        .select('reviews')
+        .exec((err, doc) => {
+            const response = {
+                status: 200,
+            };
+
+            if (err) {
+                response.status = 500;
+                response.data = err;
+            }
+            else if (!doc) {
+                response.status = 404;
+                response.data = { "Message": "No hotel found with this id." };
+            }
+            if (doc) {
+                addReview(req, res, doc);
+            }
+            else {
+                res.status(response.status).json(response.data);
+            }
+        });
+};

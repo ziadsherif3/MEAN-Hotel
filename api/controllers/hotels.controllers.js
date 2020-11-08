@@ -100,7 +100,7 @@ module.exports.hotelsGetAll = function(req, res) {
             }
             res.status(response.status).json(response.data);
     });
-}
+};
 
 module.exports.getHotel = function(req, res) {
     // const db = dbConn.get();
@@ -132,31 +132,38 @@ module.exports.getHotel = function(req, res) {
             }
             res.status(response.status).json(response.data);
         });
+};
+
+function _splitArray(input) {
+    let output = [];
+    if (input && input.length > 0) {
+        output = input.split(';');
+    }
+    return output;
 }
 
 module.exports.postHotel = async function(req, res) {
-    // const db = dbConn.get();
-    // const collection = db.collection('hotels');
-
+    
     console.log(`${req.method} request to add hotel is made.`);
 
-    if (req.body && req.body.name && req.body.stars) {
-        const newHotel = req.body;
-
-        newHotel.stars = parseInt(req.body.stars, 10);
-
-        Hotel
-            .insertMany(newHotel)
-                .then(result => {
-                    console.log(`Adding the hotel succeeded`);
-                    res.status(201).json(result);
-                })
-                .catch(err => {
-                    res.status(500).json(err);
-                });
-    }
-    else {
-        console.log(`Adding the hotel failed`);
-        res.status(400).json({"Message": "Data missing from the body."});
-    }
-}
+    Hotel
+        .create({
+            name: req.body.name,
+            description: req.body.description,
+            stars: parseInt(req.body.stars, 10),
+            services: _splitArray(req.body.services),
+            photos: _splitArray(req.body.photos),
+            currency: req.body.currency,
+            location: {
+                address: req.body.address,
+                coordinates: [parseFloat(req.body.long), parseFloat(req.body.lat)]
+            }
+        })
+        .then(result => {
+            console.log(`Adding the hotel succeeded`);
+            res.status(201).json(result);
+        })
+        .catch(err => {
+        res.status(400).json(err);
+        });
+};
