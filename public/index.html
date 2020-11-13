@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="hotel">
     <head>
-        <title>Hotel</title>
-        <link rel="stylesheet" href="./css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <title>Hotels</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
     </head>
     <body>
-        <h1>Header 1</h1>
+
+        <div ng-view></div>
+
+        <script src="node_modules/angular/angular.js"></script>
+        <script src="node_modules/angular-route/angular-route.js"></script>
+        <script src="angular-app/app.js"></script>
+        <script src="angular-app/hotel-list/hotelController.js"></script>
     </body>
 </html>
