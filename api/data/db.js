@@ -38,3 +38,4 @@ process.on('SIGINT', () => {
 /** Import hotels.model.js */
 
 require('./hotels.model.js');
+require('./user.model.js');
