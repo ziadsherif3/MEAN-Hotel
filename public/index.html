@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="hotel">
+<html lang="en" ng-app="hotel" style="height: 100%;width: 100%;">
     <head>
         <title>Hotels</title>
         <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -11,9 +11,9 @@
         }
         </style>
     </head>
-    <body>
+    <body style="height: 100%;width: 100%;">
 
-        <div ng-view style="margin: 15px;"></div>
+        <div ng-view style="width: 100%;height: 100%"></div>
 
         <script src="node_modules/angular/angular.js"></script>
         <script src="node_modules/angular-route/angular-route.js"></script>
@@ -22,6 +22,7 @@
         <script src="angular-app/hotel-list/hotelsController.js"></script>
         <script src="angular-app/hotel-display/hotelController.js"></script>
         <script src="angular-app/hotelRating.js"></script>
+        <script src="angular-app/register/registerController.js"></script>
         
     </body>
 </html>
