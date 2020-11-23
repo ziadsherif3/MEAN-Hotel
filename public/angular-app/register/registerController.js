@@ -17,6 +17,7 @@ function registerController($http) {
         else {
             $http.post('/api/users/register', user)
                 .then((res) => {
+                    console.log(res);
                     vm.error = '';
                     vm.message = 'Successful registeration.';
                 })

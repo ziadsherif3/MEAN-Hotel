@@ -1,0 +1,23 @@
+<div ng-controller="LoginController as vm" class="main-navbar" ng-init="vm.init()">
+    <ul id="left-menu" class="mnavbar-content ul-edit">
+        <li><a ng-class="vm.isActiveTab('')" href="#!/">Home</a></li>
+        <li><a ng-class="vm.isActiveTab('hotels')" href="#!/hotels">Hotels</a></li>
+        <li ng-if="!vm.isLoggedIn()"><a ng-class="vm.isActiveTab('register')" href="#!/register">Register</a></li>
+        <li ng-if="vm.isLoggedIn()"><a ng-class="vm.isActiveTab('profile')" href="#!/profile">Profile</a></li>
+    </ul>
+    <form id="login" ng-if="!vm.isLoggedIn()" class="mnavbar-content right-menu" ng-submit="vm.login()">
+        <div ng-class="{'has-error': vm.error}">
+            <input type="text" required placeholder="Username" ng-model="vm.username">
+        </div>
+        <div ng-class="{'has-error': vm.error}">
+            <input type="password" required placeholder="Password" ng-model="vm.password">
+        </div>
+        <button type="submit" class="btn btn-sm btn-success">Login</button>
+    </form>
+    <ul id="logout" ng-if="vm.isLoggedIn()" class="mnavbar-content right-menu ul-edit">
+        <li>
+            <p>{{ vm.loggedInUser }}</p>
+        </li>
+        <li><button class="navbar-btn btn-sm btn-info" ng-click="vm.logout()">Logout</button></li>
+    </ul>
+</div>

@@ -3,6 +3,7 @@
     <head>
         <title>Hotels</title>
         <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/custom-css.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
         .checked {
@@ -11,18 +12,25 @@
         }
         </style>
     </head>
-    <body style="height: 100%;width: 100%;">
+    <body style="height: 100%;width: 100%;display: flex;flex-direction: column;">
 
-        <div ng-view style="width: 100%;height: 100%"></div>
+        <navigation-bar style="flex-basis: 10%;"></navigation-bar>
+
+        <div ng-view style="flex-basis: 90%;"></div>
 
         <script src="node_modules/angular/angular.js"></script>
         <script src="node_modules/angular-route/angular-route.js"></script>
+        <script src="node_modules/angular-jwt/dist/angular-jwt.js"></script>
         <script src="angular-app/app.js"></script>
         <script src="angular-app/factories/hotelFactory.js"></script>
         <script src="angular-app/hotel-list/hotelsController.js"></script>
         <script src="angular-app/hotel-display/hotelController.js"></script>
-        <script src="angular-app/hotelRating.js"></script>
+        <script src="angular-app/hotel-rating/hotelRating.js"></script>
         <script src="angular-app/register/registerController.js"></script>
+        <script src="angular-app/navigation-bar/navigationBar.js"></script>
+        <script src="angular-app/login/loginController.js"></script>
+        <script src="angular-app/auth/auth-factory.js"></script>
+        <script src="angular-app/auth/auth-interceptor.js"></script>
         
     </body>
 </html>

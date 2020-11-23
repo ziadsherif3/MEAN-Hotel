@@ -1,10 +1,8 @@
-<div style="background-color: rgb(0, 0, 51);border-bottom: 2px solid whitesmoke;">
-    <h1 style="width: fit-content;padding: 5px;font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
-        Hotels
-    </h1>
-</div>
+<h1 style="width: fit-content;padding: 5px;font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
+    Hotels
+</h1>
 <div>
-    <ul>
+    <ul style="list-style-type: none;padding-left: 5px;">
         <li ng-repeat="hotel in vm.hotels">
             <a ng-href="#!/hotel/{{ hotel._id }}">
                 {{ hotel.name }}

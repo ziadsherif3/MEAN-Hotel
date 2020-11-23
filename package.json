@@ -22,6 +22,7 @@
   "homepage": "https://github.com/ziadsherif3/MEAN-Hotel#readme",
   "dependencies": {
     "angular": "^1.8.2",
+    "angular-jwt": "^0.1.11",
     "angular-route": "^1.8.2",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.19.0",
