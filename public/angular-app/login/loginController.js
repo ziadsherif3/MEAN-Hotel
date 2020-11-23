@@ -4,6 +4,12 @@ angular.module('hotel')
 function loginController($http, $location, $window, AuthFactory, jwtHelper) {
     const vm = this;
 
+    vm.init = function() {
+        if ($window.sessionStorage.token) {
+            vm.loggedInUser = jwtHelper.decodeToken($window.sessionStorage.token).username;
+        }
+    };
+
     vm.isLoggedIn = function() {
         if (AuthFactory.isLoggedIn) {
             return true;
@@ -32,11 +38,11 @@ function loginController($http, $location, $window, AuthFactory, jwtHelper) {
         AuthFactory.isLoggedIn = false;
         delete $window.sessionStorage.token;
         $location.path('/');
-    }
+    };
 
     vm.isActiveTab = function(url) {
         const currentPath = $location.path().split('/')[1];
 
         return (url === currentPath ? 'active-tab' : '');
-    }
+    };
 }

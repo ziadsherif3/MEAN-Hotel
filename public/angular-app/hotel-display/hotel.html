@@ -19,14 +19,7 @@
         <li ng-repeat="review in vm.hotel.reviews">{{ review.name }}: {{ review.review }}</li>
     </ul>
     </p>
-    <form name="vm.reviewForm" ng-submit="vm.addReview()">
-
-        <label for="name">Name:</label></br>
-        <input type="text" required name="name" ng-minlength="2" ng-model="vm.name" id="name"></br>
-        <div ng-show="vm.reviewForm.name.$dirty && vm.reviewForm.name.$invalid && vm.isSubmitted">
-            <p>Name should be more than 2 characters.</p>
-        </div></br>
-
+    <form name="vm.reviewForm" ng-if="vm.isLoggedIn()" ng-submit="vm.addReview()">
         <label for="rating">Rating:</label></br>
         <input type="number" required name="rating" ng-pattern="/^[1-5]$/" ng-model="vm.rating" id="rating"></br>
         <div ng-show="vm.reviewForm.rating.$dirty && vm.reviewForm.rating.$invalid && vm.isSubmitted">

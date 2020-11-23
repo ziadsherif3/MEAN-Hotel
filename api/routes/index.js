@@ -8,7 +8,7 @@ const usersCtrl = require('../controllers/users.controllers');
 
 router
     .route('/hotels')
-    .get(usersCtrl.authenticate, hotelsCtrl.hotelsGetAll)
+    .get(hotelsCtrl.hotelsGetAll)
     .post(hotelsCtrl.postHotel);
 
 router
@@ -22,7 +22,7 @@ router
 router
     .route('/hotels/:hotelId/reviews')
     .get(reviewsCtrl.getAllReviews)
-    .post(reviewsCtrl.postReview);
+    .post(usersCtrl.authenticate, reviewsCtrl.postReview);
 
 router
     .route('/hotels/:hotelId/reviews/:reviewId')

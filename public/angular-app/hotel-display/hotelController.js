@@ -1,7 +1,7 @@
 angular.module('hotel')
     .controller('HotelController', hotelControl);
 
-function hotelControl(HotelsFactory, $routeParams, $route) {
+function hotelControl(HotelsFactory, $routeParams, $route, $window, jwtHelper, AuthFactory) {
     const vm = this;
     const hotelId = $routeParams.id;
     vm.isSubmitted = false;
@@ -14,8 +14,10 @@ function hotelControl(HotelsFactory, $routeParams, $route) {
         .catch(err => console.log(err));
     
     vm.addReview = function() {
+        const name = jwtHelper.decodeToken($window.sessionStorage.token).username;
+
         const data = {
-            name: vm.name,
+            name: name,
             rating: vm.rating,
             review: vm.review
         };
@@ -32,7 +34,16 @@ function hotelControl(HotelsFactory, $routeParams, $route) {
         else {
             vm.isSubmitted = true;
         }
-    }
+    };
+
+    vm.isLoggedIn = function() {
+        if (AuthFactory.isLoggedIn) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
 }
 
 function getStars(stars) {
