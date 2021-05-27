@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 
 app.use('/api', routes);
 
-const server = app.listen(app.get('port'), () => {
+const server = app.listen(process.env.PORT || app.get('port'), () => {
     const port = server.address().port;
     console.log(`This is port ${port}`);
 });
