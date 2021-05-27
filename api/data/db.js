@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const dburl = `mongodb://localhost/meanhotel`; // The connection string
+const dburl = process.env.DBURL; // The connection string
 
 mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false });
 
